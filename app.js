@@ -20,4 +20,24 @@ $('showResult').onclick=async()=>{
  try{$('code').value=await resultCodec.encode(id,snapshot);$('copy').disabled=false}catch{$('notice').textContent='Для формирования кода откройте приложение по HTTPS или на localhost.';return}
  $('copy').onclick=async()=>{try{await navigator.clipboard.writeText($('code').value);$('notice').textContent='Код скопирован. Отправьте его организатору.'}catch{$('code').select();$('notice').textContent='Скопируйте выделенный код.'}};
 };
-if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').then(()=>navigator.serviceWorker.ready).then(()=>$('network').textContent='● Доступен оффлайн').catch(()=>$('network').textContent='Офлайн недоступен')}else $('network').textContent='Офлайн недоступен';
+async function showOfflineStatus(){
+  const label=$('network');
+  if(!('serviceWorker' in navigator)){label.textContent='Офлайн недоступен';return}
+  try{
+    const registration=await navigator.serviceWorker.register('./sw.js');
+    const worker=registration.installing||registration.waiting||registration.active;
+    if(!worker){label.textContent='Офлайн недоступен';return}
+    function refresh(){
+      if(worker.state==='activated'||registration.active?.state==='activated'){
+        label.textContent='● Доступен оффлайн';
+      }else if(worker.state==='redundant'){
+        label.textContent='Не удалось загрузить офлайн-версию';
+      }else{
+        label.textContent='Подготовка офлайн-версии…';
+      }
+    }
+    worker.addEventListener('statechange',refresh);
+    refresh();
+  }catch{label.textContent='Офлайн недоступен'}
+}
+showOfflineStatus();
