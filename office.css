@@ -20,3 +20,21 @@
 @media(max-width:600px){.office-heading{padding-right:78px}.office-heading h2{font-size:24px}.object-zone span{padding:1px 3px}}
 
 .exit-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}.exit-controls input[type=range]{width:min(240px,100%);accent-color:#ffcf89}.exit-controls [aria-pressed=true]{outline:2px solid #ffcf89}#eClue output{display:block;min-height:1.4em;color:#ffe6b1}
+
+/* On laptop screens the controls sit beside the illustration. */
+@media (min-width: 960px) and (max-height: 960px) {
+  #office:has(.office-room) { width: min(1200px, 96vw); }
+  #officeBody:has(.office-room) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.85fr) minmax(330px, 1fr);
+    align-items: start;
+  }
+  .office-heading { grid-column: 1 / -1; padding: 10px 90px 10px 20px; }
+  .office-heading time { position: absolute; right: 100px; top: 50%; transform: translateY(-50%); }
+  .office-console { padding: 12px 16px; }
+  #office .office-console p { margin: 10px 0; }
+  .office-console .line { padding: 8px 12px; }
+  .office-story { padding: clamp(20px, 4dvh, 40px) 40px; }
+  .office-story > div { max-width: 680px; }
+  .office-story h2 { font-size: clamp(40px, 7dvh, 64px); }
+}

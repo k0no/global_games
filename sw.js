@@ -1,4 +1,4 @@
-const cacheName='polar-arcade-v17';
+const cacheName='polar-arcade-v18';
 const files=['./','./index.html','./style.css','./app.js','./game.js','./office.js','./office-rooms.js','./office-rooms.svg','./office.css','./office.png','./race.js','./race.css','./drivers.png','./boss.png','./race-cover.png','./codec.js','./winter.png','./hero.png','./globe-g.svg','./icon-192.png','./icon-512.png','./manifest.webmanifest'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(cacheName).then(cache=>cache.addAll(files)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('polar-arcade-')&&k!==cacheName).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
